@@ -1,0 +1,16 @@
+INPUT(
+./release\main.o
+./release\mainwindow.o
+./release\BillInfo.o
+./release\DatabaseManager.o
+./release\BillService.o
+./release\EditBillDialog.o
+./release\AnalysisDialog.o
+./release\AiService.o
+./release\WechatImporter.o
+./release\AlipayImporter.o
+./release\moc_mainwindow.o
+./release\moc_EditBillDialog.o
+./release\moc_AnalysisDialog.o
+./release\moc_AiService.o
+);

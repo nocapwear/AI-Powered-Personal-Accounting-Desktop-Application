@@ -1,0 +1,16 @@
+INPUT(
+./debug\main.o
+./debug\mainwindow.o
+./debug\BillInfo.o
+./debug\DatabaseManager.o
+./debug\BillService.o
+./debug\EditBillDialog.o
+./debug\AnalysisDialog.o
+./debug\AiService.o
+./debug\WechatImporter.o
+./debug\AlipayImporter.o
+./debug\moc_mainwindow.o
+./debug\moc_EditBillDialog.o
+./debug\moc_AnalysisDialog.o
+./debug\moc_AiService.o
+);

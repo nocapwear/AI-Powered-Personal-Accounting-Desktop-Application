@@ -1,0 +1,28 @@
+# ===== Qt 项目通用忽略配置 =====
+# Qt 编译生成文件
+*.pro.user
+*.pro.user.*
+*.autosave
+.qmake.stash
+Makefile
+Makefile.*
+ui_*.h
+moc_*.cpp
+qrc_*.cpp
+
+# 构建目录
+debug/
+release/
+build-*/
+
+# ===== 你的项目专属忽略配置 =====
+# 数据库文件（隐私数据，必须排除）
+*.db
+*.sqlite
+
+# 本地配置文件（如果是用户生成的配置，不是默认模板，建议排除）
+config.ini
+
+# 系统文件
+.DS_Store
+Thumbs.db

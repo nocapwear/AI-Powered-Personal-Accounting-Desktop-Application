@@ -1,4 +1,4 @@
-# AIBill Agent
+# AIBill 
 
 基于 Qt Widgets + SQLite + DeepSeek API 开发的智能记账分析系统。
 

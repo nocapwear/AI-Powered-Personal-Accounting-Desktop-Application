@@ -17,6 +17,7 @@ win32-msvc*{
 #QT += sql
 QT += core gui sql charts
 QT += network
+QT += printsupport
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = AIBillAgent
@@ -41,7 +42,8 @@ SOURCES += \
     Analysis/AnalysisDialog.cpp \
     Service/AiService.cpp \
     Importer/WechatImporter.cpp \
-    Importer/AlipayImporter.cpp
+    Importer/AlipayImporter.cpp \
+    Reports/PdfExporter.cpp
 
 # 头文件（带路径）
 HEADERS += \
@@ -53,7 +55,8 @@ HEADERS += \
     Analysis/AnalysisDialog.h \
     Service/AiService.h \
     Importer/WechatImporter.h \
-    Importer/AlipayImporter.h
+    Importer/AlipayImporter.h \
+    Reports/PdfExporter.h
 
 # 告诉编译器头文件在哪里找（关键！）
 INCLUDEPATH += $$PWD/Headers

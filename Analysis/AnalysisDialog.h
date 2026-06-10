@@ -4,6 +4,7 @@
 #include <QDialog>
 #include "Service/BillService.h"
 #include "Service/AiService.h"
+#include "Reports/PdfExporter.h"
 #include "ui_AnalysisDialog.h"
 namespace Ui {
 class AnalysisDialog;

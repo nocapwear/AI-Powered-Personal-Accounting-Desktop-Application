@@ -1,0 +1,295 @@
+﻿#include "PdfExporter.h"
+
+bool PdfExporter::exportReport(const QString& aiResult)
+{
+    BillService service;
+
+    QString currentTime =
+            QDateTime::currentDateTime()
+            .toString("yyyy-MM-dd hh:mm:ss");
+
+    QString fileTime =
+            QDateTime::currentDateTime()
+            .toString("yyyy-MM-dd_hh-mm-ss");
+
+    //------------------------------------
+    // 报告目录
+    //------------------------------------
+    QString reportDir =
+            QDir::currentPath()
+            + "/ReportPdf";
+
+    QDir dir;
+
+    if(!dir.exists(reportDir))
+    {
+        dir.mkpath(reportDir);
+    }
+
+    QString pdfPath =
+            reportDir
+            + QString("/AIBill_Report_%1.pdf")
+                  .arg(fileTime);
+
+    //------------------------------------
+    // 财务数据
+    //------------------------------------
+    double income =
+            service.getTotalIncome();
+
+    double expense =
+            service.getTotalExpense();
+
+    double balance =
+            income - expense;
+
+    QStringList topList =
+            service.getTopExpenseCategories();
+
+    //------------------------------------
+    // HTML
+    //------------------------------------
+    QString html;
+
+    html += R"(
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta charset="UTF-8">
+
+    <style>
+
+    body{
+        font-family:"Microsoft YaHei";
+        margin:30px;
+        color:#333333;
+        font-size:16pt;
+    }
+
+    h1{
+        text-align:center;
+        color:#2D8CF0;
+        font-size:26pt;
+        margin-bottom:5px;
+    }
+
+    h2{
+        color:#2D8CF0;
+        font-size:20pt;
+        border-left:6px solid #2D8CF0;
+        padding-left:10px;
+        margin-top:25px;
+    }
+
+    .time{
+        text-align:center;
+        color:gray;
+        font-size:13pt;
+        margin-bottom:20px;
+    }
+
+    table{
+        width:100%;
+        border-collapse:collapse;
+        margin-top:15px;
+        margin-bottom:15px;
+    }
+
+    td{
+        border:1px solid #cccccc;
+        padding:15px;
+        font-size:16pt;
+    }
+
+    .value{
+        font-weight:bold;
+        text-align:right;
+    }
+
+    .rank-item{
+        margin-bottom:15px;
+        font-size:16pt;
+    }
+
+    .ai-box{
+        border:1px solid #cccccc;
+        border-radius:10px;
+        padding:20px;
+        background:#fafafa;
+    }
+
+    .ai-p{
+        font-size:14pt;
+        line-height:180%;
+        margin-bottom:18px;
+        padding:12px;
+        border-left:4px solid #2D8CF0;
+        background:#f8f9fa;
+     }
+
+    .footer{
+        text-align:right;
+        color:#999999;
+        font-size:12pt;
+        margin-top:40px;
+    }
+
+    </style>
+
+    </head>
+
+    <body>
+    )";
+
+    //------------------------------------
+    // 标题
+    //------------------------------------
+    html += "<h1>AIBill 智能消费分析报告</h1>";
+
+    html += QString(
+                "<div class='time'>生成时间：%1</div>")
+            .arg(currentTime);
+
+    //------------------------------------
+    // 财务概览
+    //------------------------------------
+    html += "<h2>财务概览</h2>";
+
+    html += "<table>";
+
+    html += QString(
+                "<tr>"
+                "<td>总收入</td>"
+                "<td class='value'>¥%1</td>"
+                "</tr>")
+            .arg(income,0,'f',2);
+
+    html += QString(
+                "<tr>"
+                "<td>总支出</td>"
+                "<td class='value'>¥%1</td>"
+                "</tr>")
+            .arg(expense,0,'f',2);
+
+    html += QString(
+                "<tr>"
+                "<td>净结余</td>"
+                "<td class='value'>¥%1</td>"
+                "</tr>")
+            .arg(balance,0,'f',2);
+
+    html += "</table>";
+
+    //------------------------------------
+    // TOP分类
+    //------------------------------------
+    html += "<h2>消费TOP分类</h2>";
+
+    if(topList.isEmpty())
+    {
+        html += "<div class='rank-item'>暂无数据</div>";
+    }
+    else
+    {
+        for(const QString& item : topList)
+        {
+            html += QString(
+                        "<div class='rank-item'>%1</div>")
+                    .arg(item);
+        }
+    }
+
+    //------------------------------------
+    // AI分析
+    //------------------------------------
+    html += "<h2>AI 财务分析</h2>";
+
+    html += "<div class='ai-box'>";
+
+    QString text = aiResult;
+
+    text.replace("&", "&amp;");
+    text.replace("<", "&lt;");
+    text.replace(">", "&gt;");
+
+    QStringList paragraphs =
+            text.split(
+                "\n\n",
+                QString::SkipEmptyParts);
+
+    for(QString para : paragraphs)
+    {
+        para = para.trimmed();
+
+        if(para.isEmpty())
+        {
+            continue;
+        }
+
+        para.replace("\n","<br>");
+
+        html += QString(
+                    "<div class='ai-p'>%1</div>")
+                .arg(para);
+    }
+    html += "</div>";
+
+    //------------------------------------
+    // 页脚
+    //------------------------------------
+    html +=
+            "<div class='footer'>"
+            "Generated by AIBill"
+            "</div>";
+
+    html += "</body></html>";
+
+    //------------------------------------
+    // 导出PDF
+    //------------------------------------
+    QPrinter printer(
+                QPrinter::HighResolution);
+
+    printer.setOutputFormat(
+                QPrinter::PdfFormat);
+
+    printer.setOutputFileName(
+                pdfPath);
+
+    printer.setPageSize(
+                QPrinter::A4);
+
+    printer.setPageMargins(
+                15,
+                15,
+                15,
+                15,
+                QPrinter::Millimeter);
+
+    QTextDocument document;
+
+    QFont font(
+                "Microsoft YaHei");
+
+    font.setPointSize(16);
+
+    document.setDefaultFont(font);
+
+    document.setHtml(html);
+
+    document.print(&printer);
+
+    //------------------------------------
+    // 自动打开
+    //------------------------------------
+    if(QFile::exists(pdfPath))
+    {
+        QDesktopServices::openUrl(
+                    QUrl::fromLocalFile(
+                        pdfPath));
+
+        return true;
+    }
+
+    return false;
+}

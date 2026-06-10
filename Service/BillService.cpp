@@ -1,31 +1,5 @@
 ﻿#include "BillService.h"
-//bool BillService::addBill(const BillInfo &bill)
-//{
-//    QSqlQuery query(DatabaseManager::instance().database());
 
-//    QString sql =
-//        "INSERT INTO bill "
-//        "(uuid, amount, type, category, remark, create_time, update_time) "
-//        "VALUES (?, ?, ?, ?, ?, ?, ?)";
-
-//    query.prepare(sql);
-
-//    query.addBindValue(QUuid::createUuid().toString());
-//    query.addBindValue(bill.amount);
-//    query.addBindValue(bill.type);
-//    query.addBindValue(bill.category);
-//    query.addBindValue(bill.remark);
-//    query.addBindValue(bill.createTime);
-//    query.addBindValue(bill.updateTime);
-
-//    if(!query.exec())
-//    {
-//        qDebug() << "insert failed:" << query.lastError().text();
-//        return false;
-//    }
-
-//    return true;
-//}
 bool BillService::addBill(const BillInfo &bill)
 {
     QSqlQuery query(DatabaseManager::instance().database());
@@ -339,7 +313,7 @@ QStringList BillService::getTopExpenseCategories()
             medal = "🥉";
             break;
         default:
-            medal = QString("[%1️]").arg(rank);
+//            medal = QString("[%1️]").arg(rank);
             break;
         }
         result.append(

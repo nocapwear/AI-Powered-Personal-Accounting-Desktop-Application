@@ -726,30 +726,7 @@ void MainWindow::on_btnAnalysis_clicked()
     m_pAnalysisDialog->activateWindow();
 }
 
-//void MainWindow::on_actionImportWechat_clicked()
-//{
-//    qDebug() << "点击了导入微信";
-//    QString path =QFileDialog::getOpenFileName(this,"选择微信账单","","CSV Files (*.csv)");
 
-//    if(path.isEmpty())
-//    {
-//        return;
-//    }
-
-//    WechatImporter importer;
-
-//    int count =
-//            importer.importFile(path);
-
-//    QMessageBox::information(this,"导入完成",QString("成功导入 %1 条账单").arg(count));
-
-//    //----------------------------------
-//    // 自动刷新界面
-//    //----------------------------------
-//    loadBills();
-
-//    UpdateStatistics();
-//}
 void MainWindow::on_actionImportWechat_clicked()
 {
     QString path =
@@ -769,11 +746,7 @@ void MainWindow::on_actionImportWechat_clicked()
     int count =
             importer.importFile(path);
 
-//    QMessageBox::information(
-//                this,
-//                "导入完成",
-//                QString("成功导入 %1 条账单")
-//                .arg(count));
+
 
     QMessageBox::information(
                 this,

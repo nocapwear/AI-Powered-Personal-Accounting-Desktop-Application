@@ -9,6 +9,7 @@ INPUT(
 ./release\AiService.o
 ./release\WechatImporter.o
 ./release\AlipayImporter.o
+./release\PdfExporter.o
 ./release\moc_mainwindow.o
 ./release\moc_EditBillDialog.o
 ./release\moc_AnalysisDialog.o
